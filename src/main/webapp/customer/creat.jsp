@@ -13,7 +13,6 @@
 <body>
 <form method="post">
     <h2>Create Customer</h2>
-    <input type="number" name="id">
     <input type="text" name="name">
     <input type="email" name="email">
     <input type="text" name="address">

@@ -1,9 +1,9 @@
 package com.codegym.controller;
 
 import com.codegym.model.Customer;
-import com.codegym.service.CustomerDAO;
-import com.codegym.service.CustomerServiceImpl;
-import com.codegym.service.ICustomerDAO;
+import com.codegym.service.impl.CustomerServiceImpl;
+import com.codegym.service.ICustomerService;
+import com.codegym.service.no_jdbc.CustomerManage;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -14,11 +14,13 @@ import java.util.List;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
 public class CustomerServlet extends HttpServlet {
-    CustomerServiceImpl customerService = new CustomerServiceImpl();
-    ICustomerDAO customerDAO = new CustomerDAO();
+    CustomerManage customerService = new CustomerManage();
+    ICustomerService customerDAO = new CustomerServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
@@ -72,8 +74,7 @@ public class CustomerServlet extends HttpServlet {
     }
 
     private void showListCustomer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        List<Customer> customers = this.customerService.findAll();
-//        request.setAttribute("customers", customers);
+//        response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("customer/list.jsp");
         List<Customer> customers = customerDAO.findAll();
         request.setAttribute("customers", customers);
@@ -82,6 +83,8 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
@@ -112,11 +115,10 @@ public class CustomerServlet extends HttpServlet {
     }
 
     private void creatCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-        int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        customerDAO.add(new Customer(id, name, email, address));
+        customerDAO.add(new Customer(name, email, address));
         response.sendRedirect("/customers");
     }
 

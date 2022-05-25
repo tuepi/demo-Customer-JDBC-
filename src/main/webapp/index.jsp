@@ -12,5 +12,6 @@
   </head>
   <body>
   <h1><a href="/customers">Show List Customer</a></h1>
+  <h1><a href="/products">Show List Product</a></h1>
   </body>
 </html>
